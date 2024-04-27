@@ -10,5 +10,7 @@ class BankService(private val bankRepository: BankRepository) {
         return bankRepository.getBanks()
     }
 
+    fun getBank(accountNumber: String) = bankRepository.getBank(accountNumber)
+
 
 }

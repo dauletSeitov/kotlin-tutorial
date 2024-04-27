@@ -10,8 +10,13 @@ class BankRepositoryImpl : BankRepository {
             Bank("1010", 17.0, 0),
             Bank("5678", 0.0, 100)
     )
+
     override fun getBanks(): Collection<Bank> {
         return banks
     }
+
+    override fun getBank(accountNumber: String) =
+            banks.firstOrNull { it.accountNumber == accountNumber }
+                    ?: throw NoSuchElementException("Could not find such bank: $accountNumber")
 
 }
