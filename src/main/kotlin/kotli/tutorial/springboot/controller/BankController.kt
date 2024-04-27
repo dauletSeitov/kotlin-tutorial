@@ -12,6 +12,10 @@ class BankController(val bankService: BankService) {
     @ExceptionHandler(NoSuchElementException::class)
     fun handle(e: NoSuchElementException) = ResponseEntity(e.message, HttpStatus.NOT_FOUND)
 
+    @ExceptionHandler(IllegalArgumentException::class)
+    fun handle(e: IllegalArgumentException) = ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+
+
     @GetMapping
     fun getBanks(): Collection<Bank> {
         return bankService.getBanks()
@@ -19,5 +23,9 @@ class BankController(val bankService: BankService) {
 
     @GetMapping("/{accountNumber}")
     fun getBank(@PathVariable accountNumber: String) = bankService.getBank(accountNumber)
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    fun addBank(@RequestBody bank: Bank) = bankService.addBank(bank)
 
 }

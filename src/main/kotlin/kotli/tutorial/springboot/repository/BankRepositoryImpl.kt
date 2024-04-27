@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class BankRepositoryImpl : BankRepository {
-    val banks = listOf(
+    val banks = mutableListOf(
             Bank("1234", 13.14, 17),
             Bank("1010", 17.0, 0),
             Bank("5678", 0.0, 100)
@@ -18,5 +18,14 @@ class BankRepositoryImpl : BankRepository {
     override fun getBank(accountNumber: String) =
             banks.firstOrNull { it.accountNumber == accountNumber }
                     ?: throw NoSuchElementException("Could not find such bank: $accountNumber")
+
+    override fun addBank(bank: Bank): Bank {
+        if (banks.any { it.accountNumber == bank.accountNumber }) {
+            throw IllegalArgumentException("Bank with ${bank.accountNumber} is already exists!")
+        }
+        banks.add(bank)
+        return bank
+
+    }
 
 }

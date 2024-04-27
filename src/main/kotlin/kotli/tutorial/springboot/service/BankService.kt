@@ -11,6 +11,9 @@ class BankService(private val bankRepository: BankRepository) {
     }
 
     fun getBank(accountNumber: String) = bankRepository.getBank(accountNumber)
+    fun addBank(bank: Bank): Bank {
+        return bankRepository.addBank(bank)
+    }
 
 
 }
