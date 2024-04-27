@@ -28,4 +28,12 @@ class BankRepositoryImpl : BankRepository {
 
     }
 
+    override fun updateBank(bank: Bank): Bank {
+        val currentBank = banks.firstOrNull { it.accountNumber == bank.accountNumber }
+                ?: throw NoSuchElementException("Could not find such bank: ${bank.accountNumber}")
+        banks.remove(currentBank)
+        banks.add(bank)
+        return bank
+    }
+
 }

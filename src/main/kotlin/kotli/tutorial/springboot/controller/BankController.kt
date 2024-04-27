@@ -28,4 +28,6 @@ class BankController(val bankService: BankService) {
     @ResponseStatus(HttpStatus.CREATED)
     fun addBank(@RequestBody bank: Bank) = bankService.addBank(bank)
 
+    @PatchMapping
+    fun updateBank(@RequestBody bank: Bank) = bankService.updateBank(bank)
 }

@@ -15,5 +15,9 @@ class BankService(private val bankRepository: BankRepository) {
         return bankRepository.addBank(bank)
     }
 
+    fun updateBank(bank: Bank): Bank {
+        return bankRepository.updateBank(bank)
+    }
+
 
 }

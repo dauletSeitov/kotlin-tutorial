@@ -6,4 +6,5 @@ interface BankRepository {
     fun getBanks(): Collection<Bank>
     fun getBank(accountNumber: String): Bank
     fun addBank(bank: Bank): Bank
+    fun updateBank(bank: Bank): Bank
 }

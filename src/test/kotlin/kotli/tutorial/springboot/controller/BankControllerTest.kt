@@ -1,7 +1,6 @@
 package kotli.tutorial.springboot.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.jayway.jsonpath.JsonPath
 import kotli.tutorial.springboot.model.Bank
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -12,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 
 @SpringBootTest
@@ -79,11 +79,12 @@ class BankControllerTest {
                     .andExpect {
                         status { isCreated() }
                         content { contentType(MediaType.APPLICATION_JSON) }
-                        jsonPath("$.accountNumber") {value("acc123")}
-                        jsonPath("$.trust") {value("31.415")}
-                        jsonPath("$.transactionFee") {value("2")}
+                        jsonPath("$.accountNumber") { value("acc123") }
+                        jsonPath("$.trust") { value("31.415") }
+                        jsonPath("$.transactionFee") { value("2") }
                     }
         }
+
         @Test
         fun `should return bad request if bank already exists`() {
             val invalidBank = Bank("1234", 31.415, 2)
@@ -94,12 +95,46 @@ class BankControllerTest {
                     .andDo { print() }
                     .andExpect {
                         status { isBadRequest() }
-//                        content { contentType(MediaType.APPLICATION_JSON) }
-//                        jsonPath("$.accountNumber") {value("acc123")}
-//                        jsonPath("$.trust") {value("31.415")}
-//                        jsonPath("$.transactionFee") {value("2")}
                     }
         }
 
+    }
+
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class PatchBanks {
+        @Test
+        fun `should updating bank bank`() {
+
+            val updateBank = Bank("1234", 1.0, 1)
+            mockMvc.patch("/api/bank") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(updateBank)
+            }
+                    .andDo { print() }
+                    .andExpect {
+                        status { isOk() }
+                        content {
+                            contentType(MediaType.APPLICATION_JSON)
+                            json(objectMapper.writeValueAsString(updateBank))
+                        }
+                    }
+            mockMvc.get("/api/bank/${updateBank.accountNumber}").andExpect { content { json(objectMapper.writeValueAsString(updateBank)) } }
+        }
+
+        @Test
+        fun `should return bad request if bank does not exist`() {
+
+            val updateBank = Bank("abc1234", 1.0, 1)
+            mockMvc.patch("/api/bank") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(updateBank)
+            }
+                    .andDo { print() }
+                    .andExpect {
+                        status { isNotFound() }
+                    }
+        }
     }
 }
