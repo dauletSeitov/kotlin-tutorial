@@ -36,4 +36,10 @@ class BankRepositoryImpl : BankRepository {
         return bank
     }
 
+    override fun delete(accountNumber: String) {
+        val currentBank = banks.firstOrNull { it.accountNumber == accountNumber }
+                ?: throw NoSuchElementException("Could not find such bank: $accountNumber")
+        banks.remove(currentBank)
+    }
+
 }

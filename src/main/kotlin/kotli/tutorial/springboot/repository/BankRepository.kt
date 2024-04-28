@@ -7,4 +7,5 @@ interface BankRepository {
     fun getBank(accountNumber: String): Bank
     fun addBank(bank: Bank): Bank
     fun updateBank(bank: Bank): Bank
+    fun delete(accountNumber: String): Any
 }

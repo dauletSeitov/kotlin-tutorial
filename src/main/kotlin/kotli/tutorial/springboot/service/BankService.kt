@@ -19,5 +19,6 @@ class BankService(private val bankRepository: BankRepository) {
         return bankRepository.updateBank(bank)
     }
 
+    fun delete(accountNumber: String) = bankRepository.delete(accountNumber)
 
 }
