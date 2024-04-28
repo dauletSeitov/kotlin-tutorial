@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.*
 
 @SpringBootTest
@@ -23,7 +24,7 @@ class BankControllerTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class GetBank {
+    inner class GetBanks {
         @Test
         fun `should return all banks`() {
             mockMvc.get("/api/bank")
@@ -37,7 +38,7 @@ class BankControllerTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class GetBanks {
+    inner class GetBank {
         @Test
         fun `should return the bank with the given account number`() {
             val accountNumber = "1234"
@@ -66,6 +67,7 @@ class BankControllerTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class AddBanks {
         @Test
+        @DirtiesContext
         fun `should add new bank`() {
             val bank = Bank("acc123", 31.415, 2)
             mockMvc.post("/api/bank") {
@@ -102,6 +104,7 @@ class BankControllerTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class PatchBanks {
         @Test
+        @DirtiesContext
         fun `should updating bank bank`() {
 
             val updateBank = Bank("1234", 1.0, 1)
@@ -139,6 +142,7 @@ class BankControllerTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class DeleteBank {
         @Test
+        @DirtiesContext
         fun `should delete the bank`() {
 
             val accountNumber = "1234"
